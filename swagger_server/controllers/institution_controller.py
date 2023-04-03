@@ -64,7 +64,21 @@ class InstitutionView(MethodView):
 
         :rtype: InlineResponse200
         """
-        return 'do some magic!'
+        self.institution_id = institution_id
+        
+        try:
+            
+            response = self.institution_usecase.delete_institution(self.institution_id)
+
+
+        except Exception as ex:
+            message = str(ex)
+            response= Response400(
+                code=-1,
+                message=message
+            )
+
+        return response
 
 
     def get_institution(self):  # noqa: E501

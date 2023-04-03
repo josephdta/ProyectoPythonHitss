@@ -1,6 +1,6 @@
 from swagger_server.models.response_institution import ResponseInstitution
 from swagger_server.models.response_institution_data import ResponseInstitutionData
-from swagger_server.models.request_institution_add import RequestInstitutionAdd
+#from swagger_server.models.request_institution_add import RequestInstitutionAdd
 
 
 class InstitutionUseCase:
@@ -86,3 +86,24 @@ class InstitutionUseCase:
 
         return responder
 
+    def delete_institution(self,intitution_id):     
+        self.intitution_id = intitution_id
+        data_responder= []
+        institutions4 = self.intitution_repository.delete_institution(self.intitution_id)
+
+        for i in institutions4:
+            data_responder.append(
+                ResponseInstitutionData(
+                    id =i.id,
+                    name =i.name,
+                    description =i.description,
+                    address =i.address
+                    )
+                )
+        responde = ResponseInstitution(
+            code=0, 
+            message= "Proceso exitoso",
+            data = data_responder
+            )
+
+        return responde
