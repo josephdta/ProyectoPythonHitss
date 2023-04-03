@@ -30,23 +30,18 @@ class InstitutionView(MethodView):
         :type body: dict | bytes
 
         :rtype: InlineResponse200
-        """
-        #self.bodys = body
-        #dictio=[]
+        """        
         try:
 
             if connexion.request.is_json:
                 body = RequestInstitutionAdd.from_dict(connexion.request.get_json())  # noqa: E501
-                #dictio= json.loads(body)
-                nombre= body.name()
-                #nombre= body.get('name')
-                direccion= body.address()
-                #direccion=body.get('address')
-                descripcion=body.description()
-                #descripcion=body.get('description')
-                creado_user=body.created_user()
-                #creado_user=body.get('created_user')
-                respon = self.institution_usecase.addd_institution(nombre,descripcion,direccion,creado_user)
+
+            #Con esto podemos acceder a las propiedades del objeto 'body'    
+            nombre= body.name
+            direccion=body.address
+            descripcion=body.description
+            creado_user=body.created_user
+            respon = self.institution_usecase.addd_institution(nombre,descripcion,direccion,creado_user)
                 
             
         except Exception as ex:
@@ -55,7 +50,7 @@ class InstitutionView(MethodView):
                     code=-1,
                     message=message
                 )
-                #return respon
+                
 
         return respon
 

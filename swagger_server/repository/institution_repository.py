@@ -26,11 +26,10 @@ class IntitutionRepository:
         self.description= description
         self.address = address
         self.created_user = created_user
-        sql_add= (f"INSERT INTO institution(name, description, address, created_user) VALUES ({self.name},{self.description},{self.address},{self.created_user})")
+        sql_add= (f"INSERT INTO institution(name, description, address, created_user) VALUES ('{self.name}','{self.description}','{self.address}','{self.created_user}')")
         sql_get= (f"SELECT * FROM institution WHERE name='{self.name}'")
         with self.session_factory() as session:
             session.execute(sql_add)
             session.commit()
             rowsadd = session.execute(sql_get)
-
         return rowsadd
