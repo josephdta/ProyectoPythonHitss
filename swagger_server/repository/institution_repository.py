@@ -40,7 +40,7 @@ class IntitutionRepository:
     
     def delete_institution(self,intitution_id):
         self.intitution_id= intitution_id
-        #Le pasamos el id a la sentencia para consultar y borrar la fila
+        #Le pasamos el id a la sentencia para consultar y poder mostrar la fila a borrar, y luego sí propiamente borrar la fila.
         sql_get= (f"SELECT * FROM institution WHERE id={self.intitution_id}")
         sql_borrar= (f"DELETE FROM institution WHERE id={self.intitution_id}")
         
@@ -50,4 +50,19 @@ class IntitutionRepository:
             session.commit()
         return rowsid
 
-        
+    def update_institution(self,id,name,description,address,updated_user):
+        self.id=id
+        self.name= name
+        self.description= description
+        self.address = address
+        self.updated_user = updated_user    
+
+        #Sentencia para actualizar valores de la tabla con el id como condición.
+        sql_upd= (f"UPDATE institution SET name='{self.name}', description='{self.description}', address='{self.address}', updated_user='{self.updated_user}' WHERE id='{self.id}'")
+        #Seleccionamos la fila a mostrar con el id que llega por parámetro.
+        sql_get= (f"SELECT * FROM institution WHERE id='{self.id}'")
+        with self.session_factory() as session:
+            session.execute(sql_upd)
+            session.commit() #Método para guardar los cambios en la database.
+            rowsupd = session.execute(sql_get)
+        return rowsupd        

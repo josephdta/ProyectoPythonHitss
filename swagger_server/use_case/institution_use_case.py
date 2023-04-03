@@ -1,6 +1,5 @@
 from swagger_server.models.response_institution import ResponseInstitution
 from swagger_server.models.response_institution_data import ResponseInstitutionData
-#from swagger_server.models.request_institution_add import RequestInstitutionAdd
 
 
 class InstitutionUseCase:
@@ -107,3 +106,31 @@ class InstitutionUseCase:
             )
 
         return responde
+    
+    def update_institution(self,id,name,description,address,updated_user):
+        self.id=id
+        self.name= name
+        self.description= description
+        self.address= address
+        self.updated_user=updated_user 
+
+        data_response=[]
+        institutions = self.intitution_repository.update_institution(self.id,self.name,self.description,self.address,self.updated_user)
+
+        for i in institutions:
+            data_response.append(
+                ResponseInstitutionData(
+                    id = i.id,
+                    name =i.name,
+                    description =i.description,
+                    address =i.address,
+                    updated_user=i.updated_user
+                    )
+                )
+        responder = ResponseInstitution(
+            code=0, 
+            message= "Proceso exitoso",
+            data = data_response
+            )
+
+        return responder

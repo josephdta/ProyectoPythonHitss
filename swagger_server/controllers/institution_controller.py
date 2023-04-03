@@ -142,6 +142,29 @@ class InstitutionView(MethodView):
 
         :rtype: InlineResponse200
         """
-        if connexion.request.is_json:
-            body = RequestInstitutionUpd.from_dict(connexion.request.get_json())  # noqa: E501
-        return 'do some magic!'
+        try:
+
+            if connexion.request.is_json:
+                body = RequestInstitutionUpd.from_dict(connexion.request.get_json())  # noqa: E501
+
+            #Con esto podemos acceder a las propiedades del objeto 'body' 
+            id= body.id   
+            nombre= body.name
+            direccion=body.address
+            descripcion=body.description
+            updated_user=body.updated_user
+            respon = self.institution_usecase.update_institution(id,nombre,descripcion,direccion,updated_user)
+                
+            
+        except Exception as ex:
+                message = str(ex)
+                respon= Response400(
+                    code=-1,
+                    message=message
+                )
+                
+
+        return respon        
+        
+            
+        
